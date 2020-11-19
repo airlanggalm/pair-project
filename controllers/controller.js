@@ -51,6 +51,7 @@ class Controller {
                     res.send('EMAIL SUDAH TERDAFTAR')
                 }
         })
+
     }
 
     static cekLogIn(req, res) {
