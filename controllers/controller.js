@@ -31,13 +31,28 @@ class Controller {
             email: req.body.email,
             password: req.body.password
         }
-        User.create(userData)
-            .then(_ => {
-                res.redirect('/')
+        User.findAll({
+            where: {
+                email: userData.email
+            }
+        })
+            .then(data => {
+                if (data.length == 0){
+                    User.create(userData)
+                    .then(_ => {
+                        res.redirect('/')
+                    })
+                    .catch(err => {
+                        res.send(err.message)
+                    })
+                } else {
+                    res.send('ada data')
+                }
             })
             .catch(err => {
                 res.send(err.message)
             })
+        
     }
 
     static cekLogIn(req, res) {
