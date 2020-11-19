@@ -70,7 +70,7 @@ class Controller {
                     req.session.name = user.name
                     res.redirect('/')
                 } else {
-                    res.send('invalid pw')
+                    res.send('invalid username or password')
                 }
             })
             .catch(err => {
@@ -171,6 +171,17 @@ class Controller {
                 })
             })
             .then(_ => {
+                res.redirect('/toys')
+            })
+            .catch(err => {
+                res.send(err.message)
+            })
+    }
+
+    static decrementToy(req, res){
+        console.log(req.params.id);
+        Toy.decrement('stock', {where : {id: +req.params.id}})
+            .then(data => {
                 res.redirect('/toys')
             })
             .catch(err => {
