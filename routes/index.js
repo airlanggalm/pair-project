@@ -20,7 +20,8 @@ router.post('/register', Controller.addUser)
 router.use(isLogIn)
 router.get('/toys', Controller.showToys)
 router.get('/toys/buy/:id', Controller.buyToys )
-
+router.get('/thanks', Controller.thanks)
 router.get('/logout', Controller.logOut)
+router.get('/toys/delete/:id', Controller.delOrder)
 
 module.exports = router
