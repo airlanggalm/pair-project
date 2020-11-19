@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'toyId'
       })
     }
+
+    getPriceRp() {
+
+      return `Rp. ${this.price.toLocaleString('id')}`
+    }
   };
   Toy.init({
     name: DataTypes.STRING,
@@ -24,13 +29,6 @@ module.exports = (sequelize, DataTypes) => {
     company: DataTypes.STRING,
     price: DataTypes.INTEGER
   }, {
-    hooks: {
-      beforeCreate(instance, options) {
-        if(instance.price > 0) {
-          instance.price = `Rp. ${instance.price}`
-        }
-      }
-    },
     sequelize,
     modelName: 'Toy',
   });
