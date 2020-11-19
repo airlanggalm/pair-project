@@ -13,7 +13,8 @@ class Controller {
         let userId = req.session.userId
         let name = req.session.name
         res.render('home.ejs', {
-            userId, name
+            userId,
+            name
         })
     }
 
@@ -34,23 +35,23 @@ class Controller {
         }
 
         User.findAll({
-            where: {
-                email: userData.email
-            }
-        })
+                where: {
+                    email: userData.email
+                }
+            })
             .then(data => {
-                if (data.length == 0){
+                if (data.length == 0) {
                     User.create(userData)
-                    .then(_ => {
-                        res.redirect('/')
-                    })
-                    .catch(err => {
-                        res.send(err.message)
-                    })
+                        .then(_ => {
+                            res.redirect('/')
+                        })
+                        .catch(err => {
+                            res.send(err.message)
+                        })
                 } else {
                     res.send('EMAIL SUDAH TERDAFTAR')
                 }
-        })
+            })
 
     }
 
@@ -88,25 +89,92 @@ class Controller {
         });
     }
 
-    static showToys (req,res) {
-        Toy.findAll({})
-        .then((data) => {
-            res.render("toys", {data})
-        })
-        .catch(err => {
-            res.send(err.message)
-        })
+    static showToys(req, res) {
+        Toy.findAll()
+            .then((data) => {
+                // console.log(req.session);
+                res.render("toys", {
+                    data
+                })
+            })
+            .catch(err => {
+                res.send(err.message)
+            })
 
     }
 
     static buyToys(req, res) {
+        let dataToy
         Toy.findByPk(+req.params.id)
             .then(data => {
-                console.log(data)
-                res.render("buys", {data})
+                dataToy = data
+                let toy = {
+                    userId: req.session.userId,
+                    toyId: dataToy.id,
+                    quantity: 1,
+                    total: dataToy.price
+                }
+                return UserCart.create(toy)
+            })
+            .then(_ => {
+                // console.log(req.session);
+                return User.findAll({
+                    where:{
+                        id: req.session.userId
+                    },
+                    include: {
+                        model: UserCart,
+                        where: {
+                            userId: req.session.userId
+                        },
+                        include: {
+                            model: Toy
+                        }
+                        
+                    }
+                })
+                // .then(data => {
+                //     // console.log(data[0].UserCarts[0].Toy);
+                // })
+                // .catch(err => {})
+            })
+            .then(data => {
+                // console.log(data1[0].UserCarts[0].Toy.id);
+                let toy = data[0].UserCarts
+                // console.log(toy);
+                // console.log(data);
+                // res.send(data[0].UserCarts)
+                res.render("buys", {
+                    data:toy
+                })
             })
             .catch(err => {
                 res.send(err)
+            })
+    }
+
+    static thanks(req, res) {
+        res.render('thanks')
+    }
+
+    static delOrder(req, res) {
+        Toy.findByPk(+req.params.id, {
+                include: [UserCart]
+            })
+            .then(data => {
+                // console.log(data.UserCarts);
+                let cartId = data.UserCarts[0].id
+                return UserCart.destroy({
+                    where: {
+                        id: cartId
+                    }
+                })
+            })
+            .then(_ => {
+                res.redirect('/toys')
+            })
+            .catch(err => {
+                res.send(err.message)
             })
     }
 }
