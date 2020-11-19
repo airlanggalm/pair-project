@@ -18,6 +18,8 @@ router.get('/register', Controller.register)
 router.post('/register', Controller.addUser)
 
 router.use(isLogIn)
+router.get('/toys', Controller.showToys)
+router.get('/toys/buy/:id', Controller.buyToys )
 
 router.get('/logout', Controller.logOut)
 

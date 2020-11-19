@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toys</title>
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a> |
+    <a href="/logout">Logout</a>
+  </nav>
+
+  <table border="3">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Stock</th>
+            <th>Color</th>
+            <th>Company</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+            <% data.forEach(data => { %>
+
+              <tr>
+                    <td><%= data.id %></td>
+                    <td><%= data.name %></td>
+                    <td><%= data.stock %></td>
+                    <td><%= data.color %></td>
+                    <td><%= data.company %></td>
+                    <td><%= data.getPriceRp() %></td>
+                    <td><a href="/toys/buy/<%= data.id %>">Add to Cart</a></td>
+                </tr>
+            <% }) %>
+
+    </tbody>
+</table>
+
+</body>
+</html>
