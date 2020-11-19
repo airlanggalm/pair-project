@@ -6,6 +6,7 @@ const {
 const {
     comparePw
 } = require('../helper/password')
+const toy = require('../models/toy')
 
 class Controller {
     static home(req, res) {
@@ -31,13 +32,25 @@ class Controller {
             email: req.body.email,
             password: req.body.password
         }
-        User.create(userData)
-            .then(_ => {
-                res.redirect('/')
-            })
-            .catch(err => {
-                res.send(err.message)
-            })
+
+        User.findAll({
+            where: {
+                email: userData.email
+            }
+        })
+            .then(data => {
+                if (data.length == 0){
+                    User.create(userData)
+                    .then(_ => {
+                        res.redirect('/')
+                    })
+                    .catch(err => {
+                        res.send(err.message)
+                    })
+                } else {
+                    res.send('EMAIL SUDAH TERDAFTAR')
+                }
+        })
     }
 
     static cekLogIn(req, res) {
@@ -72,6 +85,28 @@ class Controller {
                 res.redirect('/');
             }
         });
+    }
+
+    static showToys (req,res) {
+        Toy.findAll({})
+        .then((data) => {
+            res.render("toys", {data})
+        })
+        .catch(err => {
+            res.send(err.message)
+        })
+
+    }
+
+    static buyToys(req, res) {
+        Toy.findByPk(+req.params.id)
+            .then(data => {
+                console.log(data)
+                res.render("buys", {data})
+            })
+            .catch(err => {
+                res.send(err)
+            })
     }
 }
 
