@@ -52,20 +52,22 @@
     </thead>
 
     <tbody>
-
-              <tr>
-                    <td scope="row"><%= data.id %></td>
-                    <td><%= data.name %></td>
-                    <td><%= data.color %></td>
-                    <td><%= data.company %></td>
-                    <td><%= data.getPriceRp() %></td>
-                    <td>
-                      <button class="btn btn-outline-success badge-pill"><a href="/toys/create/<%= data.id %>">Checkout Now!</a></button>
+      <% for (let i = 0; i < data.length; i++){ %>
+        <tr>
+              <td><%= data[i].Toy.id %></td>
+              <td><%= data[i].Toy.name %></td>
+              <td><%= data[i].Toy.color %></td>
+              <td><%= data[i].Toy.company %></td>
+              <td><%= data[i].Toy.getPriceRp() %></td>
+              <td>
+                      <button class="btn btn-outline-success badge-pill"><a href="/thanks/<%= data[i].Toy.id %>">Checkout Now!</a></button>
                       
                       <button class="btn btn-outline-danger badge-pill"><a href="/toys/delete/<%= data.id %>">Remove from Cart</a></button>
                     </td>
-                </tr>
-   </tbody>
+     <% } %>
+
+    </tbody>
+
 </table>
 </div>
 </nav>

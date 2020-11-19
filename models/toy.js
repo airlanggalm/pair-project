@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     getPriceRp() {
-      
-      return `Rp. ${this.price.toLocaleString("id")}`
+
+      return `Rp. ${this.price.toLocaleString('id')}`
     }
   };
   Toy.init({
