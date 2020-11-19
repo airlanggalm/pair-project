@@ -119,7 +119,7 @@ class Controller {
             .then(_ => {
                 // console.log(req.session);
                 return User.findAll({
-                    where:{
+                    where: {
                         id: req.session.userId
                     },
                     include: {
@@ -130,7 +130,7 @@ class Controller {
                         include: {
                             model: Toy
                         }
-                        
+
                     }
                 })
                 // .then(data => {
@@ -145,7 +145,7 @@ class Controller {
                 // console.log(data);
                 // res.send(data[0].UserCarts)
                 res.render("buys", {
-                    data:toy
+                    data: toy
                 })
             })
             .catch(err => {
@@ -158,17 +158,10 @@ class Controller {
     }
 
     static delOrder(req, res) {
-        Toy.findByPk(+req.params.id, {
-                include: [UserCart]
-            })
-            .then(data => {
-                // console.log(data.UserCarts);
-                let cartId = data.UserCarts[0].id
-                return UserCart.destroy({
-                    where: {
-                        id: cartId
-                    }
-                })
+        UserCart.destroy({
+                where: {
+                    id: +req.params.id
+                }
             })
             .then(_ => {
                 res.redirect('/toys')
@@ -178,9 +171,13 @@ class Controller {
             })
     }
 
-    static decrementToy(req, res){
+    static decrementToy(req, res) {
         console.log(req.params.id);
-        Toy.decrement('stock', {where : {id: +req.params.id}})
+        Toy.decrement('stock', {
+                where: {
+                    id: +req.params.id
+                }
+            })
             .then(data => {
                 res.redirect('/toys')
             })
