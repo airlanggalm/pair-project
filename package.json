@@ -25,9 +25,7 @@
     "express": "^4.17.1",
     "pg": "^8.5.1",
     "sequelize": "^6.3.5",
-    "session": "^0.1.0"
-  },
-  "devDependencies": {
+    "session": "^0.1.0",
     "express-session": "^1.17.1",
     "sequelize-cli": "^6.2.0"
   }
